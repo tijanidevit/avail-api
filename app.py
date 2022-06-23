@@ -34,8 +34,14 @@ def indexLogic():
         maxTime = toTime # the latest time from all timezones
 
         overlapedCCs = []
+        weekendCCs = []
 
         for content in contents:
+            # checks for weekends
+            datetime_object = datetime.strptime(content['fromTime'], "%Y-%m-%dT%H:%M")
+            if datetime_object.weekday() >= 5:
+                weekendCCs.append(content['cc'])
+
 
             tzone = country_timezones[content['cc']]
             tzoneTime = datetime.now(pytz.timezone(((tzone[0])))).strftime("%z")
@@ -84,6 +90,14 @@ def indexLogic():
             return (jsonify({
                 'success': 0,
                 'message': 'There is an overlap of time in ' + olap,
+                'status': 403
+        }))
+
+        elif(len(weekendCCs) > 0 ):
+            weekendCC = ' '.join(map(str,weekendCCs))
+            return (jsonify({
+                'success': 0,
+                'message': 'It is weekend in ' + weekendCC,
                 'status': 403
         }))
 
