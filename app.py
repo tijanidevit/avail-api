@@ -33,6 +33,7 @@ def indexLogic():
         minTime = fromTime # the earliest time from all timezones 
         maxTime = toTime # the latest time from all timezones
 
+        overlapedCCs = []
 
         for content in contents:
 
@@ -71,9 +72,10 @@ def indexLogic():
 
 
         if(fromTime < adminFromTime or toTime > adminToTime ):
+            olap = ' '.join(map(str,overlapedCCs))
             return (jsonify({
                 'success': 0,
-                'message': 'There is an overlap of time in ',
+                'message': 'There is an overlap of time in ' + olap,
                 'status': 403
         }))
 
@@ -81,24 +83,7 @@ def indexLogic():
             
             return (jsonify({
                 'success': 0,
-                'message': 'There is an overlap of time in ',
-                'status': 403
-        }))
-
-
-        elif(len(weekendCCs) > 0 ):
-            weekendCC = ' '.join(map(str,weekendCCs))
-            return (jsonify({
-                'success': 0,
-                'message': 'It is weekend in ' + weekendCC,
-                'status': 403
-        }))
-
-        elif(len(holidayCCs) > 0 ):
-            holidayCC = ' '.join(map(str,holidayCCs))
-            return (jsonify({
-                'success': 0,
-                'message': 'It is holiday in ' + holidayCC,
+                'message': 'There is an overlap of time in ' + olap,
                 'status': 403
         }))
 
