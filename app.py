@@ -137,6 +137,32 @@ def indexLogic():
                 'status': 200
         }))
 
+# with app.test_client() as c:
+#     rv = c.post('/api/auth', json={
+#         [
+        
+#             {
+#             "from":"2022-05-02T09:00:00.0",
+#             "to":"2022-05-02T17:00:00.0",
+#             "CC":"SG"
+#             },
+#             {
+#             "from":"2022-05-02T09:00:00.0",
+#             "to":"2022-05-02T17:00:00.0",
+#             "CC":"NG"
+#             },
+#             {
+#             "from":"2022-05-02T09:00:00.0",
+#             "to":"2022-05-02T17:00:00.0",
+#             "CC":"IN"
+#             }
+#         ]
+        
+            
+#     })
+    
+#     json_data = rv.get_json()
+#     assert verify_token("Available time fetched successfully", json_data['message'])
 
 def _isDateHoliday(cc,date):
     api_key   = '471fdf8f35e111ea68e7f354a7a763c7fc109a99'
