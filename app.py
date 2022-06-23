@@ -133,7 +133,7 @@ def indexLogic():
     except Exception as e: 
         return (jsonify({
                 'success': 0,
-                'message': 'Invalid input! Please enter valid country code(s)',
+                'message': 'Invalid input! Please enter valid country code(s) and ensure your network is good',
                 'status': 200
         }))
 
