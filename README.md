@@ -24,17 +24,9 @@ Used to send api request to the calendarific api
 
 Used to handle timezones with country codes e.g getting country code timezone etc
 
-### Packages consumed
+### API consumed
 
 #### Calendarific api
 
 - Used to check if a date is holiday in a country.
 - It was used instead of holidays package because some holidays vary like the Islamic holidays, but calenderific is always updated
-
-##### Flask
-
-##### datetime
-
-##### requests
-
-##### pytz
