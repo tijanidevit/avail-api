@@ -7,6 +7,13 @@ def index():
 
 
 
-
+@app.route('/', methods = ['POST'])
+def indexLogic():
+    return (jsonify({
+        'success': 1,
+        'message': 'Available time fetched successfully',
+        'data' : 'resp',
+        'status': 200
+    }))
 if __name__ == "__main__":
     app.run(debug=True)
