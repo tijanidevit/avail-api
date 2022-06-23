@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template
 from pytz import country_timezones,timezone
 import pytz
 from datetime import datetime
+import requests
 app = Flask(__name__)
 
 @app.route('/', methods = ['GET'])
@@ -35,12 +36,18 @@ def indexLogic():
 
         overlapedCCs = []
         weekendCCs = []
+        holidayCCs = []
 
         for content in contents:
+
             # checks for weekends
             datetime_object = datetime.strptime(content['fromTime'], "%Y-%m-%dT%H:%M")
             if datetime_object.weekday() >= 5:
                 weekendCCs.append(content['cc'])
+
+            # checks for holidays
+            if(_isDateHoliday(content['cc'],datetime_object.strftime("%Y-%m-%d"))):
+                holidayCCs.append(content['cc'])
 
 
             tzone = country_timezones[content['cc']]
@@ -101,6 +108,14 @@ def indexLogic():
                 'status': 403
         }))
 
+        elif(len(holidayCCs) > 0 ):
+            holidayCC = ' '.join(map(str,holidayCCs))
+            return (jsonify({
+                'success': 0,
+                'message': 'It is holiday in ' + holidayCC,
+                'status': 403
+        }))
+
         else:
             fromTime = int(fromTime)
             toTime = int(toTime)
@@ -123,6 +138,24 @@ def indexLogic():
         }))
 
 
+def _isDateHoliday(cc,date):
+    api_key   = '471fdf8f35e111ea68e7f354a7a763c7fc109a99'
+    base_url  = 'https://calendarific.com/api/v2'
+    api_route = '/holidays'
+
+    location  = cc
+    date_inpt = date
+    y, m, d = date_inpt.split('-')
+    
+    full_url = '{}{}?api_key={}&country={}&type=national&year={}&month={}&day={}'\
+                    .format(base_url, api_route, api_key, location, str(int(y)), str(int(m)), str(int(d)))                                           # Step 4
+
+    response = requests.get(full_url).json()
+
+    if response['response']['holidays'] != []:
+        return 'true'
+    else:
+        return 'false'
         
 if __name__ == "__main__":
     app.run(debug=True)
